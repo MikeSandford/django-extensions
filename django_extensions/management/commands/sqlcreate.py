@@ -53,13 +53,11 @@ The envisioned use case is something like this:
         
         if engine == 'mysql':
             print "CREATE DATABASE %s;" % dbname
-            print "GRANT ALL PRIVILEGES ON %s.* to '%s'@'%s' identified by '%s';" % (
-                    dbname, dbuser, dbhost, dbpass)
+            print "GRANT ALL PRIVILEGES ON %s.* to '%s'@'%s' identified by '%s';" % (dbname, dbuser, dbhost, dbpass)
             
         elif engine == 'postgresql_psycopg2':
             print "CREATE USER %s WITH password '%s';" % (dbuser, dbpass)
-            print "CREATE DATABASE %s;" % dbname
-            
+            print "CREATE DATABASE %s WITH owner = '%s';" % (dbuser, dbname)
             
         else:
             raise CommandError, "I don't know how to handle %s", engine
