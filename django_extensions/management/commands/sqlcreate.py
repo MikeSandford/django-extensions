@@ -52,14 +52,17 @@ The envisioned use case is something like this:
             dbhost = 'localhost'
         
         if engine == 'mysql':
-            print "CREATE DATABASE %s;" % dbname
+            print "CREATE DATABASE %s CHARACTER SET utf8;" % dbname
             print "GRANT ALL PRIVILEGES ON %s.* to '%s'@'%s' identified by '%s';" % (dbname, dbuser, dbhost, dbpass)
             
         elif engine == 'postgresql_psycopg2':
             print "CREATE USER %s WITH password '%s';" % (dbuser, dbpass)
-            print "CREATE DATABASE %s WITH owner = '%s';" % (dbuser, dbname)
+            print "CREATE DATABASE %s WITH owner = '%s' ENCODING = 'UTF8'" % (dbuser, dbname)
             
         else:
-            raise CommandError, "I don't know how to handle %s", engine
+            # fallback on SQL92
+            sys.stderr.write("I don't know how to handle %s for sure, falling back to SQL92", engine)
+            print "CREATE DATABASE %s;" % dbname
+            print "GRANT ALL PRIVILEGES ON DATABASE %s to %s" % (dbname, dbuser)
         
         
