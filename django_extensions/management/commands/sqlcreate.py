@@ -1,5 +1,6 @@
 from django.core.management.base import NoArgsCommand
 from django.conf import settings
+import sys
 
 class Command(NoArgsCommand):
     help = """Generates the SQL to create your database for you, as specified in settings.py
